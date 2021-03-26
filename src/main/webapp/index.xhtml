@@ -34,7 +34,8 @@
 						 
    <p:column>    				
 	      <f:facet name = "header">Status</f:facet>    				
-	      #{task.concluido}
+	      <p:outputLabel for="titulo" value="Aberta" rendered="#{!task.concluido}" />
+	      <p:outputLabel for="titulo" value="Concluído" rendered="#{!task.concluido}" />
 	   </p:column>
 	   
    <p:column>    				
