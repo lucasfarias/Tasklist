@@ -1,2 +1,4 @@
 # Tasklist
-Simple TaskList
+Simple Task List
+
+Created in JSF + MySQL 
