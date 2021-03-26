@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://xmlns.jcp.org/jsf/core"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:p="http://primefaces.org/ui"
+>
+    <h:head>
+        <title>Tasklist</title>
+    </h:head>
+    <h:body>
+        <h1>Minhas Tarefas:</h1>
+        <h:form id="form-inserir">
+        <p:outputPanel id="panel" styleClass="p-mb-2">
+        <h:panelGrid columns="3" cellpadding="7">
+            <p:outputLabel for="titulo" value="Título da Tarefa" />
+            <p:inputText id="titulo" value="#{tarefaBean.titulo}" required="true"
+	            			     requiredMessage="O título é de preenchimento obrigatório"/>
+	        <p:message for="titulo" />
+            <p:outputLabel for="descricao" value="Descrição da Tarefa" />
+            <p:inputText id="descricao" value="#{tarefaBean.descricao}" />
+            
+            <p:commandButton value="Inserir" actionListener="#{tarefaBean.submit}"
+            	icon="ui-gear" update="@all"/>
+       </h:panelGrid>
+       </p:outputPanel>
+        <br />
+        </h:form>
+        <h:form>
+        <br />
+  <p:dataTable id="list-tarefas" value = "#{tarefaBean.tasks}" var = "task"
+  						rows="10"
+						 paginator="true">
+						 
+   <p:column>    				
+	      <f:facet name = "header">Status</f:facet>    				
+	      #{task.concluido}
+	   </p:column>
+	   
+   <p:column>    				
+	      <f:facet name = "header">Título</f:facet>    				
+	      <p:inputText value="#{task.titulo}" required="true" />
+	   </p:column>
+	   
+	    <p:column>
+	      <f:facet name = "header">Descrição</f:facet>
+	      <p:inputText value="#{task.descricao}" />
+	   </p:column>
+	   
+	   <p:column>
+	      <f:facet name = "header">Criado em:</f:facet>
+	      #{task.dataCriacao}
+	   </p:column>
+	   
+	   <p:column>
+	      <f:facet name = "header">Concluído em:</f:facet>
+	      #{task.dataConclusao}
+	   </p:column>
+	   
+	   <p:column>
+	      <f:facet name = "header">Ações:</f:facet> 
+	      	<p:commandLink value="Reabrir" actionListener="#{tarefaBean.concluir(task)}" rendered="#{task.concluido}" update="list-tarefas">
+            </p:commandLink>
+            <p:commandLink value="Concluir" actionListener="#{tarefaBean.concluir(task)}" rendered="#{!task.concluido}" update="list-tarefas">
+            </p:commandLink>
+            / <p:commandLink value="Deletar" actionListener="#{tarefaBean.deletar(task)}" update="list-tarefas">
+            </p:commandLink>
+            
+	   </p:column>
+	</p:dataTable>
+		
+         </h:form>
+    </h:body>
+</html>
