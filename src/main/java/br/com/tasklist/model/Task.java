@@ -8,7 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-
+@Entity
+@Table(name="tb_task")
 public class Task {
 	
 	@Id

@@ -1,16 +1,19 @@
 package br.com.tasklist.view;
 
-import java.util.ArrayList;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.enterprise.context.SessionScoped;
+import javax.annotation.PostConstruct;
+import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import br.com.tasklist.model.Task;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import br.com.tasklist.repository.TaskRepository;
 
-@Named @SessionScoped
+@Named 
+@ViewScoped
 public class TarefaBean implements Serializable {
 
     /**
@@ -23,17 +26,18 @@ public class TarefaBean implements Serializable {
     
     private List<Task> tasks;
     
+    @Inject
+    private TaskRepository taskRepository;
+    
+    
+    @PostConstruct
+    public void init() {
+    	this.tasks = taskRepository.loadTasks();
+    }
     
 
-    public TarefaBean() {
-		tasks = new ArrayList<Task>();
-	}
-
 	public String submit() {
-        Task taskNova = new Task(titulo, descricao);
-        tasks.add(taskNova);
-        this.titulo = "";
-        this.descricao = "";
+        taskRepository.addTask(titulo, descricao);
         return "";
     }
 
@@ -66,11 +70,17 @@ public class TarefaBean implements Serializable {
 			task.setDataConclusao(LocalDateTime.now());
 			task.setConcluido(true);
 		}
+		atualizarTasks();
 		return "";
 	}
 	
 	public String deletar(Task task) {
-		tasks.remove(task);
+		taskRepository.deleteTask(task);
+		return "";
+	}
+	
+	public String atualizarTasks() {
+		taskRepository.updateTasks(this.tasks);
 		return "";
 	}
 	
